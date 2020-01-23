@@ -1,8 +1,11 @@
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Game extends JFrame {
+public class Game extends JFrame implements KeyListener {
 
     Board board;
+    boolean spacePressed, rightPressed, leftPressed;
 
     public Game(){
 
@@ -10,8 +13,9 @@ public class Game extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        board = new Board();
+        board = new Board(this);
         add(board);
+        addKeyListener(this);
         pack();
 
         board.setup();
@@ -23,4 +27,24 @@ public class Game extends JFrame {
         new Game();
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            spacePressed = true;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            spacePressed = false;
+        }
+
+    }
 }

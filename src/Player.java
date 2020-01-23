@@ -8,11 +8,11 @@ public class Player {
     public Player(Board board){
 
         x = board.getWidth() / 2;
-        y = board.getHeight() +  (Height + 10);
+        y = board.getHeight() -  (Height + 50);
     }
 
     public void paint (Graphics g){
-        g.setColor(Color.PINK);
+        g.setColor(Color.RED);
         g.fillRect(x,y,WIDTH,Height);
     }
 
