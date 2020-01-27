@@ -41,12 +41,14 @@ public class Board extends JPanel implements ActionListener {
                 for (int k= 0; k < enemies[0].length; k++){
                     if(enemies[j][k] != null){
                     if (bullets.get(i).getBounds().intersects(enemies[j][k].getBounds())){
-                        bullets.remove(bullets.get(i));
+                        bullets.get(i).isRemove();
                         enemies[j][k] = null;
                         break;
                     }
                     }
-
+                    if (bullets.get(i).isRemove()){
+                        bullets.remove(bullets.get(i));
+                    }
                 }
         }
 
