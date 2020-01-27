@@ -10,6 +10,11 @@ public class Bullet {
     public void move(){
         y-=dy;
     }
+
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,diameter,diameter);
+    }
+
     public void paint(Graphics g){
         g.setColor(Color.WHITE);
         g.fillOval(x,y,diameter,diameter);
