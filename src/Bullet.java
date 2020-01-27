@@ -14,5 +14,9 @@ public class Bullet {
         g.setColor(Color.WHITE);
         g.fillOval(x,y,diameter,diameter);
     }
+    public int getY(){
+        return y;
+    }
+
 
 }

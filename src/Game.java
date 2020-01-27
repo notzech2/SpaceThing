@@ -38,6 +38,12 @@ public class Game extends JFrame implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
             spacePressed = true;
         }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            leftPressed = true;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            rightPressed = true;
+        }
     }
 
     @Override
@@ -45,6 +51,20 @@ public class Game extends JFrame implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
             spacePressed = false;
         }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            leftPressed = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            rightPressed = false;
+        }
 
+    }
+
+    public boolean leftPressed() {
+        return leftPressed;
+    }
+
+    public boolean rightPressed() {
+        return rightPressed;
     }
 }

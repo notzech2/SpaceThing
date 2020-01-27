@@ -11,6 +11,8 @@ public class Board extends JPanel implements ActionListener {
     Enemy[][] enemies = new Enemy[5][10];
     ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     long timeDelay;
+    long bulletDelay;
+    long currentTime;
     Game game;
     public Board(Game game){
         this.game = game;
@@ -23,6 +25,7 @@ public class Board extends JPanel implements ActionListener {
 //    gives starting positions
     public void  setup(){
         player = new Player(this);
+
         for (int row = 0; row < 5; row++){
             for (int col = 0; col < 10; col++){
                 enemies[row][col]= new Enemy(getWidth()/4 + col*50,row*50);
@@ -37,13 +40,22 @@ public class Board extends JPanel implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(game.spacePressed == true){
+        if(game.spacePressed == true && currentTime - bulletDelay >= 250 ){
             bullets.add(new Bullet(player));
+            bulletDelay = System.currentTimeMillis();
         }
-        long currentTime = System.currentTimeMillis();
+         currentTime = System.currentTimeMillis();
 
         for (Bullet bullet: bullets){
             bullet.move();
+
+        }
+        for (int i = 1; i < bullets.size(); i--){
+            if (bullets.get(i).getY() < 0 ){
+                bullets.remove(bullets.get(i));
+            }
+            else
+                bullets.get(i).move();
         }
 
         if (currentTime - timeDelay>= 1000) {
@@ -53,6 +65,13 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
             timeDelay = System.currentTimeMillis();
+
+            if (game.leftPressed() && player.getX() >0){
+                player.moveLeft();
+            }
+            if (game.rightPressed() && player.getY() < getWidth()){
+                player.moveRight();
+            }
         }
 
 
@@ -61,7 +80,6 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void paintComponent(Graphics g){
-
 
         super.paintComponent(g);
         player.paint(g);
