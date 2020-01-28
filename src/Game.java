@@ -9,23 +9,26 @@ public class Game extends JFrame implements KeyListener {
 
     public Game(){
 
-        setTitle("SPACE IMMIGRANTS");
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         setTitle("SPACE IMMIGRANTS");
+         setVisible(true);
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        board = new Board(this);
-        add(board);
-        addKeyListener(this);
-        pack();
+         board = new Board(this);
+         add(board);
+         addKeyListener(this);
+         pack();
 
-        board.setup();
-        setLocationRelativeTo(null);
+         board.setup();
+         setLocationRelativeTo(null);
+
     }
 
     public static void main(String[] args){
 
         new Game();
+
     }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -35,7 +38,7 @@ public class Game extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
             spacePressed = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -44,11 +47,12 @@ public class Game extends JFrame implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             rightPressed = true;
         }
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
             spacePressed = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -57,14 +61,17 @@ public class Game extends JFrame implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             rightPressed = false;
         }
-
     }
 
-    public boolean leftPressed() {
+    public boolean isSpacePressed(){
+        return spacePressed;
+    }
+
+    public boolean isLeftPressed(){
         return leftPressed;
     }
 
-    public boolean rightPressed() {
+    public boolean isRightPressed(){
         return rightPressed;
     }
 }
