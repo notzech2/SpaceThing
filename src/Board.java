@@ -21,7 +21,6 @@ public class Board extends JPanel implements ActionListener {
        setPreferredSize(new Dimension(1024,900));
        setBackground(Color.BLACK);
        timer = new Timer(1000/60, this);
-       timer.start();
    }
 
    //Gives objects starting positions
@@ -101,20 +100,43 @@ public class Board extends JPanel implements ActionListener {
    public void paintComponent(Graphics g){
 
        super.paintComponent(g);
+       if(game.isEnterPressed()){
+           Gamestates.setPLAY(true);
+       }
 
-       player.paint(g);
-       for(int row = 0; row < 5; row++){
-           for(int col = 0; col < 10; col++){
-               if(enemies[row][col] != null){
-                   enemies[row][col].paint(g);
+
+       if(Gamestates.isMENU()){
+        //paint menu
+           g.setColor(Color.WHITE);
+           g.setFont(new Font("Arial", Font.PLAIN, 69));
+           printSimpleString("SPACE IMMIGRANTS",getWidth(),0,150,g);
+           g.setFont(new Font("Arial", Font.BOLD, 36));
+           printSimpleString("Press ENTER To Play!",getWidth(),0,300,g);
+
+       }
+       if (Gamestates.isPLAY() && !timer.isRunning()){
+           timer.start();
+           player.paint(g);
+           for(int row = 0; row < 5; row++){
+               for(int col = 0; col < 10; col++){
+                   if(enemies[row][col] != null){
+                       enemies[row][col].paint(g);
+                   }
                }
            }
+           for(Bullet bullet: bullets){
+               bullet.paint(g);
+           }
        }
-       for(Bullet bullet: bullets){
-           bullet.paint(g);
-       }
+
+
+
 
    }
 
-
+    private void printSimpleString(String s, int width, int Xpos, int Ypos, Graphics g){
+        int stringLen =(int)g.getFontMetrics().getStringBounds(s,g).getWidth();
+        int start = width/2 - stringLen/2;
+        g.drawString(s,start + Xpos, Ypos);
+    }
 }
