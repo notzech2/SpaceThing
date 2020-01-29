@@ -21,6 +21,7 @@ public class Board extends JPanel implements ActionListener {
        setPreferredSize(new Dimension(1024,900));
        setBackground(Color.BLACK);
        timer = new Timer(1000/60, this);
+       timer.start();
    }
 
    //Gives objects starting positions
@@ -61,37 +62,51 @@ public class Board extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
        long currentTime = System.currentTimeMillis();
 
-       checkCollisions();
 
-       if(game.isSpacePressed() && currentTime - bulletDelay >= 250){
-           bullets.add(new Bullet(player));
-           bulletDelay = System.currentTimeMillis();
-       }
-
-       for(int i = bullets.size()-1; i >= 0; i--){
-           if(bullets.get(i).getY() < 0){
-               bullets.remove(bullets.get(i));
-           }else
-               bullets.get(i).move();
-       }
-
-       if(currentTime - timeDelay >= 1000){
-           for(int row = 0; row < 5; row++){
-               for(int col = 0; col < 10; col++){
-                   if(enemies[row][col]!=null){
-                       enemies[row][col].move();
-                   }
+       if (Gamestates.isPLAY() && !Gamestates.isPAUSE()) {
+           if (Gamestates.isPLAY()) {
+               checkCollisions();
+               if (game.isSpacePressed() && currentTime - bulletDelay >= 250) {
+                   bullets.add(new Bullet(player));
+                   bulletDelay = System.currentTimeMillis();
                }
+
+               for (int i = bullets.size() - 1; i >= 0; i--) {
+                   if (bullets.get(i).getY() < 0) {
+                       bullets.remove(bullets.get(i));
+                   } else
+                       bullets.get(i).move();
+               }
+
+               if (currentTime - timeDelay >= 1000) {
+                   for (int row = 0; row < 5; row++) {
+                       for (int col = 0; col < 10; col++) {
+                           if (enemies[row][col] != null) {
+                               enemies[row][col].move();
+                           }
+                       }
+                   }
+                   timeDelay = System.currentTimeMillis();
+               }
+
+               if (game.isLeftPressed() && player.getX() > 0) {
+                   player.moveLeft();
+               }
+
+               if (game.isRightPressed() && (player.getX() + player.getWIDTH()) < getWidth()) {
+                   player.moveRight();
+               }
+
            }
-           timeDelay = System.currentTimeMillis();
-       }
 
-       if(game.isLeftPressed() && player.getX() > 0 ){
-           player.moveLeft();
-       }
-
-       if(game.isRightPressed() && (player.getX()+ player.getWIDTH()) < getWidth()){
-           player.moveRight();
+           if (game.isEnterPressed()) {
+               Gamestates.setPLAY(true);
+               Gamestates.setMENU(false);
+           }
+           if (game.isPPressed() && !Gamestates.isPAUSE()) {
+               Gamestates.setPAUSE(true);
+           } else
+               Gamestates.setPAUSE(false);
        }
 
        repaint();
@@ -100,9 +115,6 @@ public class Board extends JPanel implements ActionListener {
    public void paintComponent(Graphics g){
 
        super.paintComponent(g);
-       if(game.isEnterPressed()){
-           Gamestates.setPLAY(true);
-       }
 
 
        if(Gamestates.isMENU()){
@@ -114,8 +126,7 @@ public class Board extends JPanel implements ActionListener {
            printSimpleString("Press ENTER To Play!",getWidth(),0,300,g);
 
        }
-       if (Gamestates.isPLAY() && !timer.isRunning()){
-           timer.start();
+       if (Gamestates.isPLAY()){
            player.paint(g);
            for(int row = 0; row < 5; row++){
                for(int col = 0; col < 10; col++){
